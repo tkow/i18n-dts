@@ -3,6 +3,8 @@ import {
   getConfigFromPackageJson,
   getTranslationFromModel,
   isJson,
+  isJavascript,
+  isTypescript
 } from '../file';
 
 describe('file', () => {
@@ -48,15 +50,25 @@ describe('file', () => {
     });
   });
 
-  // describe('isSource', () => {
-  //   it('returns true', () => {
-  //     expect(isSource('.ts')).toBeTruthy();
-  //     expect(isSource('.js')).toBeTruthy();
-  //   });
-  //   it('returns false', () => {
-  //     expect(isSource('.json')).toBeFalsy();
-  //   });
-  // });
+  describe('isJavascript', () => {
+    it('returns true', () => {
+      expect(isJavascript('.js')).toBeTruthy();
+    });
+    it('returns false', () => {
+      expect(isJavascript('.ts')).toBeFalsy();
+      expect(isJavascript('.json')).toBeFalsy();
+    });
+  });
+
+  describe('isTypescript', () => {
+    it('returns true', () => {
+      expect(isTypescript('.ts')).toBeTruthy();
+    });
+    it('returns false', () => {
+      expect(isTypescript('.js')).toBeFalsy();
+      expect(isTypescript('.json')).toBeFalsy();
+    });
+  });
 
   describe('getTranslationFromModel', () => {
     it('returns error with no model file', () => {

@@ -43,6 +43,7 @@
       "<rootDir>/node_modules/",
       "<rootDir>/src/lib/__tests__/generated/",
       "<rootDir>/src/lib/__tests__/expected/",
+      "<rootDir>/src/lib/__tests__/fixtures/",
       "<rootDir>/src/lib/__tests__/utils.ts"
     ],
     "moduleFileExtensions": [
