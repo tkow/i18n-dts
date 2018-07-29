@@ -3,7 +3,6 @@ import {
   getConfigFromPackageJson,
   getTranslationFromModel,
   isJson,
-  isSource,
 } from '../file';
 
 describe('file', () => {
@@ -49,15 +48,15 @@ describe('file', () => {
     });
   });
 
-  describe('isSource', () => {
-    it('returns true', () => {
-      expect(isSource('.ts')).toBeTruthy();
-      expect(isSource('.js')).toBeTruthy();
-    });
-    it('returns false', () => {
-      expect(isSource('.json')).toBeFalsy();
-    });
-  });
+  // describe('isSource', () => {
+  //   it('returns true', () => {
+  //     expect(isSource('.ts')).toBeTruthy();
+  //     expect(isSource('.js')).toBeTruthy();
+  //   });
+  //   it('returns false', () => {
+  //     expect(isSource('.json')).toBeFalsy();
+  //   });
+  // });
 
   describe('getTranslationFromModel', () => {
     it('returns error with no model file', () => {

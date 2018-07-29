@@ -2,6 +2,8 @@ import { existsSync } from 'fs';
 import * as path from 'path';
 import { CONFIG_NAME, PACKAGE_JSON } from '../constants';
 import { Config, JsonObject } from '../interfaces';
+import { tsTransform } from './tsTrasform';
+
 
 export const getConfigFromPackageJson = (dir: string): Config | Error => {
   const packageJsonPath = path.join(dir, PACKAGE_JSON);
@@ -22,8 +24,12 @@ export const isJson = (extname: string): boolean => {
   return extname.endsWith('.json');
 };
 
-export const isSource = (extname: string): boolean => {
-  return extname.endsWith('.ts') || extname.endsWith('.js');
+export const isTypescript = (extname: string): boolean => {
+  return extname.endsWith('.ts');
+};
+
+export const isJavascript = (extname: string): boolean => {
+  return extname.endsWith('.js');
 };
 
 export const getTranslationFromModel = (
@@ -33,7 +39,8 @@ export const getTranslationFromModel = (
     return Error('model file does not exist');
   }
   const extname = path.extname(filePath);
-  if (isJson(extname) || isSource(extname)) {
+  if (isTypescript(extname)) return tsTransform(filePath.replace(/\.ts/,''))
+  if (isJson(extname) || isJavascript(extname)) {
     return require(filePath) as JsonObject;
   }
   return Error('file extension type should be either .json or .ts|.js');

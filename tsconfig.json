@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "jsx": "react",
     "outDir": "build",
-    "rootDir": "src",
+    "rootDir": "./src",
+    "typeRoots": ["./typings","./node_modules/@types"],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "experimentalDecorators": false,
@@ -20,7 +21,7 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "filesGlob": ["src/**/*.ts"],
+  "filesGlob": ["./src/**/*.ts"],
   "exclude": ["build", "node_modules", "example"],
   "compileOnSave": false
 }
