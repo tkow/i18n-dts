@@ -1,14 +1,29 @@
 import { mkdirSync, rmdirSync, unlinkSync } from 'fs';
 import * as path from 'path';
-import { OUTPUT_FILE_NAME } from '../../constants';
+import { Config } from '../../interfaces';
 import { generate } from '../generate';
+import { config  as _config} from "./fixtures/tsexport/config";
 import { readFile } from './utils';
 
 describe('generate', () => {
-  const dirPath = './src/lib/__tests__/generated/';
-  const filePath = `${dirPath}${OUTPUT_FILE_NAME}`;
 
-  beforeAll(() => mkdirSync(dirPath));
+  const dirPath = path.resolve(process.cwd(),_config.outputDir)
+  const filePath =  path.resolve(dirPath,`${_config.module.dFileName}`);
+
+  console.log(dirPath)
+  console.log(filePath)
+
+  const config :Config= {
+    model: path.resolve(process.cwd(),_config.model),
+    module: {
+      ..._config.module,
+    },
+    outputDir: path.resolve(process.cwd()),
+  }
+
+  beforeAll(() => {
+    mkdirSync(dirPath)
+  });
 
   afterAll(() => rmdirSync(dirPath));
 
@@ -16,9 +31,11 @@ describe('generate', () => {
 
   it('writes d.ts file with no key', async () => {
     expect.assertions(1);
-    return generate({}, path.resolve(dirPath)).then(() => {
+    return generate({}, config).then(() => {
       const actual = readFile(filePath);
       const expected = readFile('./src/lib/__tests__/expected/no-keys.d.ts');
+      console.log(actual)
+      console.log(expected)
       expect(actual).toEqual(expected);
     });
   });
@@ -29,7 +46,7 @@ describe('generate', () => {
       {
         'common.cancel': 'Cancel {{value}}',
       },
-      path.resolve(dirPath),
+      config,
     ).then(() => {
       const actual = readFile(filePath);
       const expected = readFile('./src/lib/__tests__/expected/one-key.d.ts');
@@ -44,7 +61,7 @@ describe('generate', () => {
         'common.cancel': 'Cancel {{value}}',
         'common.ok': 'OK',
       },
-      path.resolve(dirPath),
+      config,
     ).then(() => {
       const actual = readFile(filePath);
       const expected = readFile(

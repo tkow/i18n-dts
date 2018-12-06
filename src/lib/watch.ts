@@ -1,12 +1,12 @@
 import { watch as watchDir } from 'fs';
 import * as path from 'path';
-import { OUTPUT_FILE_NAME } from '../constants';
-import { JsonObject } from '../interfaces';
+import { Config, JsonObject } from '../interfaces';
 import { getTranslationFromModel } from './file';
 import { generate } from './generate';
 
-export const watch = (filePath: string, outputPath: string) => {
+export const watch = (filePath: string, config:Config) => {
   const dir = path.dirname(filePath)
+  const {outputDir:outputPath,module:{dFileName}} = config
   console.info(`Start watching: ${dir}`);
 
   watchDir(dir,{persistent:true,recursive:true}, (eventType,fileName) => {
@@ -18,9 +18,9 @@ export const watch = (filePath: string, outputPath: string) => {
       console.error(translationOrError.message);
     }
     const translation = translationOrError as JsonObject;
-    generate(translation, outputPath)
+    generate(translation, config)
       .then(() =>
-        console.info(`Emitted: ${path.join(outputPath, OUTPUT_FILE_NAME)}`),
+        console.info(`Emitted: ${path.join(outputPath, dFileName)}`),
       )
       .catch(error =>
         console.error(`Error occurred while emitting: ${error.message}`),

@@ -3,10 +3,13 @@ import { CONFIG_NAME } from '../../constants';
 import {
   getConfigFromPackageJson,
   getTranslationFromModel,
-  isJson,
   isJavascript,
+  isJson,
   isTypescript
 } from '../file';
+
+
+const testJsonDir = `${__dirname}/fixtures/valid/`
 
 describe('file', () => {
   describe('getConfigFromPackageJson', () => {
@@ -36,8 +39,12 @@ describe('file', () => {
       );
       expect(config instanceof Error).toBeFalsy();
       expect(config).toEqual({
-        model: './en.json',
-        outputDir: './typings',
+        model: path.resolve(testJsonDir,'./en.json'),
+        module:{
+          dFileName: 'i18n-js.d.ts',
+          name: 'i18n-js'
+        },
+        outputDir: path.resolve(testJsonDir,'./typings'),
       });
     });
   });

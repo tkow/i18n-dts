@@ -1,6 +1,10 @@
 export interface Config {
   model: string;
   outputDir: string;
+  module: {
+    name:string;
+    dFileName:string;
+  }
 }
 
 export interface Translation {

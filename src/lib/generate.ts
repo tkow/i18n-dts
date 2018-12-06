@@ -1,21 +1,20 @@
 import { existsSync, PathLike, writeFile } from 'fs';
 import mkdirp = require('mkdirp');
 import * as path from 'path';
-import { OUTPUT_FILE_NAME } from '../constants';
-import { JsonObject } from '../interfaces';
+import { Config, JsonObject } from '../interfaces';
 import { dts } from './ast';
 import { flattenKeys } from './parser';
 
 export const generate = (
   translations: JsonObject,
-  dirPath: string,
+  config: Config,
 ): Promise<void> => {
-  if (!existsSync(dirPath)) {
-    mkdirp.sync(dirPath);
+  if (!existsSync(config.outputDir)) {
+    mkdirp.sync(config.outputDir);
   }
   const keys = flattenKeys(translations);
-  const data = dts(keys);
-  const outputPath = path.join(dirPath, OUTPUT_FILE_NAME);
+  const data = dts(keys,config.module);
+  const outputPath = path.join(config.outputDir, config.module.dFileName);
   return execWriteFile(outputPath, data);
 };
 

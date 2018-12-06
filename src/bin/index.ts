@@ -2,7 +2,6 @@
 
 import program = require('commander');
 import path = require('path');
-import { OUTPUT_FILE_NAME } from '../constants';
 import { Config, JsonObject } from '../interfaces';
 import { getConfigFromPackageJson, getTranslationFromModel } from '../lib/file';
 import { generate } from '../lib/generate';
@@ -15,23 +14,19 @@ if (configOrError instanceof Error) {
   console.error(configOrError.message);
   process.exit(1);
 }
-
 const config = configOrError as Config;
-const modelPath = path.resolve(config.model);
-const outputPath = path.resolve(config.outputDir);
-
 if (program.watch) {
-  watch(modelPath, outputPath);
+  watch(config.model, config);
 } else {
-  const translationOrError = getTranslationFromModel(modelPath);
+  const translationOrError = getTranslationFromModel(config.model);
   if (translationOrError instanceof Error) {
     console.error(translationOrError.message);
     process.exit(1);
   }
   const translation = translationOrError as JsonObject;
-  generate(translation, outputPath)
+  generate(translation, config)
     .then(() =>
-      console.info(`Emitted: ${path.join(outputPath, OUTPUT_FILE_NAME)}`),
+      console.info(`Emitted: ${path.join(config.outputDir, config.module.dFileName)}`),
     )
     .catch(error =>
       console.error(`Error occurred while emitting: ${error.message}`),

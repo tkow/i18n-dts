@@ -1,11 +1,9 @@
 import * as ts from 'typescript';
 import {
   JSON_MODULE_NAME,
-  MODULE_NAME,
   NEWLINE,
-  OUTPUT_FILE_NAME,
 } from '../constants';
-import { Translation } from '../interfaces';
+import { Config, Translation } from '../interfaces';
 
 const fallbackVar = ts.createVariableStatement(
   undefined,
@@ -127,11 +125,11 @@ const tFunc = (t: Translation): ts.FunctionDeclaration =>
 const tFuncs = (keys: Translation[]): ts.FunctionDeclaration[] =>
   keys.map(key => tFunc(key));
 
-const i18nModule = (keys: Translation[]): ts.ModuleDeclaration =>
+const i18nModule = (keys: Translation[],moduleName:string): ts.ModuleDeclaration =>
   ts.createModuleDeclaration(
     undefined,
     [ts.createToken(ts.SyntaxKind.DeclareKeyword)],
-    ts.createLiteral(MODULE_NAME),
+    ts.createLiteral(moduleName),
     ts.createModuleBlock([
       fallbackVar,
       translationsVar,
@@ -170,16 +168,16 @@ const jsonModule = (): ts.ModuleDeclaration =>
     ts.createModuleBlock([valueVar, exportDefault]),
   );
 
-export const dts = (keys: Translation[]): string => {
+export const dts = (keys: Translation[], moduleConfig:Config['module']): string => {
   const source = ts.createSourceFile(
-    OUTPUT_FILE_NAME,
+    moduleConfig.dFileName,
     '',
     ts.ScriptTarget.ES2015,
   );
   const printer = ts.createPrinter();
   const i18n = printer.printNode(
     ts.EmitHint.Unspecified,
-    i18nModule(keys),
+    i18nModule(keys,moduleConfig.name),
     source,
   );
   const json = printer.printNode(ts.EmitHint.Unspecified, jsonModule(), source);

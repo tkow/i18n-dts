@@ -7,8 +7,6 @@ describe('tsTransform', () => {
   describe('retun appropriate Json', () => {
     const expected = readFile('./src/lib/__tests__/expected/tsexport.json');
     it('returns empty array', () => {
-      console.log(exports)
-      // global.exportsをMockにしないとテストができない。
       const result = tsTransform(`${__dirname}/fixtures/tsexport/index`)
       expect(result).toEqual(JSON.parse(expected));
     });
