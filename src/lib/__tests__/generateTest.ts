@@ -18,7 +18,7 @@ describe('generate', () => {
     module: {
       ..._config.module,
     },
-    outputDir: path.resolve(process.cwd()),
+    outputDir:dirPath,
   }
 
   beforeAll(() => {
@@ -34,8 +34,6 @@ describe('generate', () => {
     return generate({}, config).then(() => {
       const actual = readFile(filePath);
       const expected = readFile('./src/lib/__tests__/expected/no-keys.d.ts');
-      console.log(actual)
-      console.log(expected)
       expect(actual).toEqual(expected);
     });
   });

@@ -14,7 +14,7 @@ export const generate = (
   }
   const keys = flattenKeys(translations);
   const data = dts(keys,config.module);
-  const outputPath = path.join(config.outputDir, config.module.dFileName);
+  const outputPath = path.resolve(config.outputDir, config.module.dFileName);
   return execWriteFile(outputPath, data);
 };
 
