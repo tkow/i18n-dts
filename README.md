@@ -30,11 +30,16 @@ First of all specify the following settings in root `package.json`.
 ```json
 "i18n-dts": {
   "model": "./src/locale/languages/en.json",
-  "outputDir": "./typings"
+  "outputDir": "./typings",
+  "module":"i18n-js"
 }
 ```
 
 Note that when you specify `.ts` or `.js` file type as a model, use `module.exports` to export an object.
+
+### module (optional)
+
+Though react-native-18n deprecated, you can specify module option as i18n moduleName you use in your react-native app in package.json for switching seemlessly. If you don't specify it, default is i18n-js.
 
 ```ts
 module.exports = {
@@ -74,6 +79,27 @@ In the watch mode, i18n-dts watches update of model file and generates d.ts file
 ```sh
 i18n-dts --watch
 ```
+
+## spliting setting
+
+You can split locale file and as long as you export composed json from i18n-dts's `model` configuration at package.json.
+
+ex) model is ./ja in package.json
+
+```shell
+.
+├── index.ts
+└── ja
+    ├── Auth
+    │   └── index.ts
+    ├── Entrance
+    │   ├── index.ts
+    │   ├── login.ts
+    │   └── signup.ts
+    └── validations
+        └── index.ts
+```
+
 
 ## Licence
 
