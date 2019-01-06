@@ -3,7 +3,8 @@ import {DEFAULTS,register} from 'ts-node'
 import {Script} from 'vm'
 
 const compilerOptions = {
-  allowJs: true
+  allowJs: true,
+  module:'commonjs'
 }
 
 const service = register({...DEFAULTS,compilerOptions})
